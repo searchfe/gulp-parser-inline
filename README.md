@@ -17,6 +17,7 @@ First, install `gulp-parser-inline` as a development dependency:
 ```shell
 npm install --save-dev gulp-md5
 ```
+gulpfile.js
 
 ```javascript
 
@@ -71,20 +72,25 @@ parse({
 
 ### base
 Type: `String`
+
 default: false
 
 ### type
 Type:  `String`
+
 Value: `js|tpl|css`
 
 ### staticDomain
 Type:  `String`
+
 default: ''
 
 ### useHash
+
 Type:  `Boolean`
 
 ### compress
+
 Type:  `Boolean`
 
 ## Build
