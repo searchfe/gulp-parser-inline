@@ -1,0 +1,86 @@
+{
+  "name": "gulp-parser-inline",
+  "version": "0.0.2-1",
+  "discription": "gulp-parser-inline",
+  "scripts": {
+    "lint": "tslint src/**/*.ts test/**/*.ts",
+    "doc": "gulp doc",
+    "conf": "tsc && node_modules/ts-node/dist/bin.js src/configuration/generate.ts",
+    "test": "jest --no-cache",
+    "cover": "node_modules/nyc/bin/nyc.js npm run test test/**/*.ts && node_modules/nyc/bin/nyc.js report --reporter=text",
+    "coveralls": "npm run cover && nyc report --reporter=text-lcov | coveralls",
+    "url": "echo visit: http://127.0.0.1:8077/demo/?debug",
+    "build": "gulp",
+    "watch": "gulp watch & npm start",
+    "start": "npm run url && http-server ./ -c-1 -p 8077"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+http://xxx.com/demo"
+  },
+  "homepage": "http://xxx.com/demo",
+  "devDependencies": {
+    "@types/clean-css": "^4.2.1",
+    "@types/ftp": "^0.3.29",
+    "@types/gulp-util": "^3.0.34",
+    "@types/jest": "^24.0.11",
+    "@types/node": "^10.14.5",
+    "@types/through2": "^2.0.34",
+    "@types/underscore": "^1.8.9",
+    "clean-css": "^4.2.1",
+    "coveralls": "^3.0.2",
+    "crypto": "^1.0.1",
+    "del": "^3.0.0",
+    "etpl": "^3.2.0",
+    "findup-sync": "^2.0.0",
+    "gulp": "^4.0.0",
+    "gulp-base64-inline": "^1.0.4",
+    "gulp-inline-template": "^1.1.5",
+    "gulp-replace": "^1.0.0",
+    "gulp-typedoc": "^2.2.1",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "gulp-util": "^3.0.8",
+    "http-server": "^0.11.1",
+    "istanbul": "^0.4.5",
+    "jest": "^24.7.1",
+    "jsdoc-to-markdown": "^4.0.1",
+    "nyc": "^13.0.1",
+    "source-map-support": "^0.5.9",
+    "through2": "^3.0.1",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.16.0",
+    "typedoc": "^0.12.0",
+    "typedoc-plugin-markdown": "^1.1.15",
+    "typescript": "^3.1.6"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">= 6.0.x"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "author": "",
+  "files": [
+    "dist",
+    "*.json",
+    "*.md"
+  ],
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "reporter": [
+      "html"
+    ],
+    "all": true
+  }
+}
