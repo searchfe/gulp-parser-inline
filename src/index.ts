@@ -7,9 +7,9 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as through from 'through2';
 import * as gutil from 'gulp-util';
-import { inlineToJs } from './inlineToJs';
-import { inlineToTpl } from './inlineToTpl';
-import { inlineToCss } from './inlineToCss';
+import { parseJs } from './parseJs';
+import { parseTpl } from './parseTpl';
+import { parseCss } from './parseCss';
 
 interface parserOption {
     base: string,
@@ -36,13 +36,13 @@ function parseInline(options: parserOption) {
         if (file.isBuffer()) {
             switch (options.type) {
                 case 'js':
-                    inlineToJs.call(this, file, options);
+                    parseJs.call(this, file, options);
                     break;
                 case 'tpl':
-                    inlineToTpl.call(this, file, options);
+                    parseTpl.call(this, file, options);
                     break;
                 case 'css':
-                    inlineToCss.call(this, file, options);
+                    parseCss.call(this, file, options);
                     break;
             }
             this.push(file);

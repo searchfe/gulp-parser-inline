@@ -10,7 +10,7 @@ interface parserOption {
     useHash: boolean
 }
 
-function inlineToJs(file: any, options: parserOption) {
+function parseJs(file: any, options: parserOption) {
     var content = '';
     if (file.contents) {
         content = file.contents.toString();
@@ -68,7 +68,7 @@ function parseJSContent(content: string, options: parserOption, file: any) {
                     // 判断inline的文件的后缀名，无后缀增加js后缀并inline
                     switch (path.extname(filePath)) {
                         case '.js':
-                            inlinecontent += inlineToJs({ path: filePath }, options);
+                            inlinecontent += parseJs({ path: filePath }, options);
                             break;
                         case '.etpl':
                             inlinecontent += JSON.stringify(fs.readFileSync(filePath).toString().replace(/\r\n/g, '\n'));
@@ -89,4 +89,4 @@ function parseJSContent(content: string, options: parserOption, file: any) {
     return content;
 }
 
-export { inlineToJs, parseJSContent }
+export { parseJs, parseJSContent }

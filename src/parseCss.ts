@@ -13,7 +13,7 @@ interface parserOption {
     compress: boolean
 }
 
-function inlineToCss(file: any, options: parserOption) {
+function parseCss(file: any, options: parserOption) {
     let content = '';
     if (file.contents) {
         content = file.contents.toString();
@@ -64,7 +64,7 @@ function parseCssContent(content: string, options: parserOption, file: any) {
             if (!fs.existsSync(filePath)) {
                 gutil.log(gutil.colors.cyan('warning:'), gutil.colors.red("the file " + filePath + " is not exists"));
             } else {
-                inlinecontent += inlineToCss({ path: filePath }, options);
+                inlinecontent += parseCss({ path: filePath }, options);
             }
         }
         
@@ -91,4 +91,4 @@ function parseCssContent(content: string, options: parserOption, file: any) {
     return content;
 }
 
-export { inlineToCss, parseCssContent }
+export { parseCss, parseCssContent }

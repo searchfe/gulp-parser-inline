@@ -1,8 +1,8 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as gutil from 'gulp-util';
-import { inlineToJs, parseJSContent } from './inlineToJs';
-import { inlineToCss, parseCssContent } from './inlineToCss';
+import { parseJs, parseJSContent } from './parseJs';
+import { parseCss, parseCssContent } from './parseCss';
 import { getMd5 } from './utils';
 
 interface parserOption {
@@ -13,7 +13,7 @@ interface parserOption {
     compress: boolean
 }
 
-function inlineToTpl(file: any, options: parserOption) {
+function parseTpl(file: any, options: parserOption) {
     let content = '';
     if (file.contents) {
         content = file.contents.toString();
@@ -55,7 +55,7 @@ function parseTplContent(content: string, options: parserOption, file: any) {
                         let name = tmpPath[tmpPath.length - 1].replace('.', '');
                         let key = name.replace('.', '');
                         let type = path.extname(lsPath);
-                        let content = inlineToCss({path: lsPath}, options);
+                        let content = parseCss({path: lsPath}, options);
                         let hash = getMd5(content, 7);
                         let srcPath = (options.staticDomain ? options.staticDomain : '') + '/se' + value.substring(0, value.length - 4) + '_' + hash + '.css';
                         let captureStr = '{%capture name ="' + name + '"%}' + content + '{%/capture%}';
@@ -80,7 +80,6 @@ function parseTplContent(content: string, options: parserOption, file: any) {
     });
 
     // 处理<script src=""> 这种src方式。
-    // let scriptReg = /\<script\s*[^\>]*?src\s*=\s*['|"]([^'"]+)?__inline['|"][^\>]*?[\/]?\>\s*?(\<\/script\>)?/ig;
     let scriptReg = /<script.*src\s*=\s*('|")(.+)\?(__lsInline|__inline)\1[^>]*>[\s\S]*?<\/script>/ig;
 
     content = content.replace(scriptReg, function (all, quote, value, type) {
@@ -97,7 +96,7 @@ function parseTplContent(content: string, options: parserOption, file: any) {
                         let name = tmpPath[tmpPath.length - 1].replace('.', '');
                         let key = name.replace('.', '');
                         let type = 'js';
-                        let content = inlineToJs({ path: lsPath }, options);
+                        let content = parseJs({ path: lsPath }, options);
                         let hash = getMd5(content, 7);
                         let srcPath = (options.staticDomain ? options.staticDomain : '') + '/se' + value.substring(0, value.length - 3) + '_' + hash + '.js';
                         let captureStr = '{%capture name ="' + name + '"%}' + content + '{%/capture%}';
@@ -126,13 +125,13 @@ function parsefile(filePath: string, options: parserOption) {
         // 判断inline的文件的后缀名，无后缀增加js后缀并inline
         switch (path.extname(filePath)) {
             case '.tpl':
-                inlinecontent += inlineToTpl({ path: filePath }, options);
+                inlinecontent += parseTpl({ path: filePath }, options);
                 break;
             case '.css':
                 inlinecontent += '<style type="text/css">' + fs.readFileSync(filePath) + '</style>';
                 break;
             case '.js':
-                let jsContent = inlineToJs({ path: filePath }, options);
+                let jsContent = parseJs({ path: filePath }, options);
                 //把文件内容放到script标签 中间
                 return '<script type="text/javascript">\n' + jsContent + '</script>';
         }
@@ -142,4 +141,4 @@ function parsefile(filePath: string, options: parserOption) {
     return inlinecontent;
 }
 
-export { inlineToTpl }
+export { parseTpl }
