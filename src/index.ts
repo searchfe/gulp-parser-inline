@@ -34,15 +34,22 @@ function parseInline(options: parserOption) {
         }
 
         if (file.isBuffer()) {
+            options = Object.assign({
+                base: path.resolve('./src/'),
+                type: 'js',
+                staticDomain: '',
+                useHash: false,
+                compress: false
+            }, options);
             switch (options.type) {
                 case 'js':
-                    parseJs.call(this, file, options);
+                    parseJs(file, options);
                     break;
                 case 'tpl':
-                    parseTpl.call(this, file, options);
+                    parseTpl(file, options);
                     break;
                 case 'css':
-                    parseCss.call(this, file, options);
+                    parseCss(file, options);
                     break;
             }
             this.push(file);

@@ -1,16 +1,19 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as gutil from 'gulp-util';
-import { getMd5 } from "./utils";
+import { getMd5 } from './utils';
+import * as UglifyJS from 'uglify-js';
 
 interface parserOption {
     base: string,
     type: string,
     staticDomain: string,
-    useHash: boolean
+    useHash: boolean,
+    compress: boolean
 }
 
 function parseJs(file: any, options: parserOption) {
+    gutil.log(gutil.colors.cyan('parseJs:'), file.path);
     var content = '';
     if (file.contents) {
         content = file.contents.toString();
@@ -39,6 +42,10 @@ function parseJs(file: any, options: parserOption) {
             return i == arr.length - 2 ? item + '_' + md5Hash : item;
         }).join('.');
         file.path = path.join(dir, filename);
+    }
+
+    if (options.compress) {
+        content = UglifyJS.minify(content).code || content;
     }
 
     file.contents = new Buffer(content);
