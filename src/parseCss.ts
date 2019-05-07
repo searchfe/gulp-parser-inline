@@ -4,6 +4,7 @@ import * as gutil from 'gulp-util';
 import { isInline, getBase64 } from './utils';
 import { getMd5 } from './utils';
 import * as CleanCSS from 'clean-css';
+import * as less from 'less';
 
 interface parserOption {
     base: string,
@@ -24,6 +25,10 @@ function parseCss(file: any, options: parserOption) {
 
     if (!content) {
         return content;
+    }
+
+    if (path.extname(file.path) === '.less') {
+        content = parseLess(content);
     }
 
     content = parseCssContent(content, options, file);
@@ -49,6 +54,14 @@ function parseCss(file: any, options: parserOption) {
     }
 
     file.contents = new Buffer(content);
+    return content;
+}
+
+function parseLess(content) {
+    less.render(content.toString(),
+        function (e, output) {
+            content = output.css;
+        })
     return content;
 }
 

@@ -53,7 +53,10 @@
     "typescript": "^3.1.6"
   },
   "dependencies": {
+    "@types/less": "^3.0.0",
+    "clean-css": "^4.2.1",
     "gulp-util": "^3.0.8",
+    "less": "^3.9.0",
     "through2": "^3.0.1",
     "uglify-js": "^3.5.10"
   },
