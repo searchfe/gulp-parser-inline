@@ -1,6 +1,6 @@
 {
   "name": "gulp-parser-inline",
-  "version": "0.0.2-3",
+  "version": "0.0.0-development",
   "discription": "gulp-parser-inline",
   "scripts": {
     "lint": "tslint src/**/*.ts test/**/*.ts",
@@ -12,13 +12,14 @@
     "url": "echo visit: http://127.0.0.1:8077/demo/?debug",
     "build": "gulp",
     "watch": "gulp watch & npm start",
-    "start": "npm run url && http-server ./ -c-1 -p 8077"
+    "start": "npm run url && http-server ./ -c-1 -p 8077",
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
-    "url": "git+http://xxx.com/demo"
+    "url": "https://github.com/searchfe/gulp-parser-inline"
   },
-  "homepage": "http://xxx.com/demo",
+  "homepage": "https://github.com/searchfe/gulp-parser-inline",
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.4",
     "@semantic-release/commit-analyzer": "^6.2.0",
