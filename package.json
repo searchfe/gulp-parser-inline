@@ -1,6 +1,6 @@
 {
   "name": "gulp-parser-inline",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "discription": "gulp-parser-inline",
   "scripts": {
     "lint": "tslint src/**/*.ts test/**/*.ts",
