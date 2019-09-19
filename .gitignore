@@ -2,7 +2,6 @@
 .DS_Store
 ._.DS_Store
 *.log
-
 # editor related
 .idea
 *.swp
@@ -11,8 +10,8 @@
 .vimrc
 
 # build related
-build/
-dist/
+build/*
+dist/*
 node_modules/
 amd_modules/
 test-reports/
@@ -22,3 +21,5 @@ coverage/
 # develop
 mydev*
 /debug/
+/test
+# output/*

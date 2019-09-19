@@ -3,17 +3,12 @@ import * as fs from 'fs';
 import * as gutil from 'gulp-util';
 import { parseJs, parseJSContent } from './parseJs';
 import { parseCss, parseCssContent } from './parseCss';
-import { getMd5 } from './utils';
-
-interface parserOption {
-    base: string,
-    type: string,
-    staticDomain: string,
-    useHash: boolean,
-    compress: boolean
-}
-
+import { modifyUrl, getFileDataFromResourceMap } from './utils';
+import { parserOption } from '../global';
+import Debug from 'debug';
+let debug = Debug('inline:parseTpl');
 function parseTpl(file: any, options: parserOption) {
+    debug('input file', file.path);
     let content = '';
     if (file.contents) {
         content = file.contents.toString();
@@ -32,7 +27,7 @@ function parseTpl(file: any, options: parserOption) {
 
     content = parseTplContent(content, options, file);
 
-    file.contents = new Buffer(content);
+    file.contents = Buffer.from(content);
     return content;
 }
 
@@ -40,12 +35,14 @@ function parseTpl(file: any, options: parserOption) {
 // 处理内联文件
 function parseTplContent(content: string, options: parserOption, file: any) {
     // 处理<link rel="stylesheet" type="text/css"> 这种内联的方式，如果在属性加上?__inline则表示需要内联。
-    let linkReg = /<link.*href\s*=\s*('|")(.+)\?(__lsInline|__inline)\1.*>/ig;
+    debug('parse tpl inline', file.path);
+    let linkReg = /<link.*href\s*=\s*('|")\/?(.+)\?(__lsInline|__inline)\1.*>/ig;
     content = content.replace(linkReg, function (all, quote, value, type) {
         let inlinecontent = '';
         if (type) {
             switch (type) {
                 case '__lsInline':
+                    debug('link lsInline', file.path);
                     let lsPath = path.resolve(path.join(options.base, value));
                     if (!fs.existsSync(lsPath)) {
                         lsPath = path.resolve(path.join(path.dirname(file.path), value));
@@ -54,10 +51,10 @@ function parseTplContent(content: string, options: parserOption, file: any) {
                         let tmpPath = value.split('/');
                         let name = tmpPath[tmpPath.length - 1].replace('.', '');
                         let key = name.replace('.', '');
-                        let type = path.extname(lsPath);
-                        let content = parseCss({path: lsPath}, options);
-                        let hash = getMd5(content, 7);
-                        let srcPath = (options.staticDomain ? options.staticDomain : '') + '/se' + value.substring(0, value.length - 4) + '_' + hash + '.css';
+                        let type = path.extname(lsPath).replace('.', '').replace(/less/,'css');
+                        let content = parseCss({ path: lsPath }, options);
+                        let hash = getFileDataFromResourceMap(lsPath, options.sourceMapPath).md5;
+                        let srcPath = (options.staticDomain ? options.staticDomain : '') + '/se/' + value.replace(/(\.[a-zA-Z]+)$/,'') + '_' + hash + '.css';
                         let captureStr = '{%capture name ="' + name + '"%}' + content + '{%/capture%}';
                         let feLsInlineStr = '{%fe_ls_inline codeConf=["type"=>"' + type + '"'
                             + ',"code"=>$smarty.capture.' + name
@@ -68,11 +65,12 @@ function parseTplContent(content: string, options: parserOption, file: any) {
                     }
                     break;
                 case '__inline':
+                    debug('link inline', file.path);
                     let filePath = path.resolve(path.join(options.base, value));
                     if (!fs.existsSync(filePath)) {
                         filePath = path.resolve(path.join(path.dirname(file.path), value));
                     }
-                    inlinecontent += parsefile(filePath, options);
+                    inlinecontent += parsefile(filePath, options, 'link');
                     break;
             }
         }
@@ -80,13 +78,14 @@ function parseTplContent(content: string, options: parserOption, file: any) {
     });
 
     // 处理<script src=""> 这种src方式。
-    let scriptReg = /<script.*src\s*=\s*('|")(.+)\?(__lsInline|__inline)\1[^>]*>[\s\S]*?<\/script>/ig;
+    let scriptReg = /<script.*src\s*=\s*('|")\/?(.+)\?(__lsInline|__inline)\1[^>]*>[\s\S]*?<\/script>/ig;
 
     content = content.replace(scriptReg, function (all, quote, value, type) {
         let inlinecontent = '';
         if (type) {
             switch (type) {
                 case '__lsInline':
+                    debug('script lsInline', file.path);
                     let lsPath = path.resolve(path.join(options.base, value));
                     if (!fs.existsSync(lsPath)) {
                         lsPath = path.resolve(path.join(path.dirname(file.path), value));
@@ -97,8 +96,8 @@ function parseTplContent(content: string, options: parserOption, file: any) {
                         let key = name.replace('.', '');
                         let type = 'js';
                         let content = parseJs({ path: lsPath }, options);
-                        let hash = getMd5(content, 7);
-                        let srcPath = (options.staticDomain ? options.staticDomain : '') + '/se' + value.substring(0, value.length - 3) + '_' + hash + '.js';
+                        let hash = getFileDataFromResourceMap(lsPath, options.sourceMapPath).md5;
+                        let srcPath = (options.staticDomain ? options.staticDomain : '') + '/se/' + value.replace(/(\.[a-zA-Z]+)$/,'') + '_' + hash + '.js';
                         let captureStr = '{%capture name ="' + name + '"%}' + content + '{%/capture%}';
                         let feLsInlineStr = '{%fe_ls_inline codeConf=["type"=>"' + type + '"'
                             + ',"code"=>$smarty.capture.' + name
@@ -109,17 +108,20 @@ function parseTplContent(content: string, options: parserOption, file: any) {
                     }
                     break;
                 case '__inline':
+                    debug('inline', file.path);
                     let jsPath = path.resolve(path.join(options.base, value));
-                    inlinecontent += parsefile(jsPath, options);
+                    inlinecontent += parsefile(jsPath, options, 'script');
                     break;
             }
         }
         return inlinecontent;
     });
+    content = modifyUrl(content);
     return content;
 }
 
-function parsefile(filePath: string, options: parserOption) {
+function parsefile(filePath: string, options: parserOption, type:string) {
+    debug('parse file', filePath);
     let inlinecontent = '';
     if (fs.existsSync(filePath)) {
         // 判断inline的文件的后缀名，无后缀增加js后缀并inline
@@ -128,12 +130,15 @@ function parsefile(filePath: string, options: parserOption) {
                 inlinecontent += parseTpl({ path: filePath }, options);
                 break;
             case '.css':
-                inlinecontent += '<style type="text/css">' + fs.readFileSync(filePath) + '</style>';
+                inlinecontent += '<style type="text/css">\n' + parseCss({ path: filePath }, options) + '\n</style>';
+                break;
+            case '.less':
+                inlinecontent += '<style type="text/css">\n' + parseCss({ path: filePath }, options) + '\n</style>';
                 break;
             case '.js':
                 let jsContent = parseJs({ path: filePath }, options);
                 //把文件内容放到script标签 中间
-                return '<script type="text/javascript">\n' + jsContent + '</script>';
+                return type === 'script' ? '<script type="text/javascript">\n' + jsContent + '\n</script>' : jsContent;
         }
     } else {
         gutil.log(filePath);
