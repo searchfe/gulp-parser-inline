@@ -1,6 +1,6 @@
 {
   "name": "gulp-parser-inline",
-  "version": "0.0.2-3",
+  "version": "1.0.0",
   "discription": "gulp-parser-inline",
   "scripts": {
     "lint": "tslint src/**/*.ts test/**/*.ts",
@@ -12,14 +12,20 @@
     "url": "echo visit: http://127.0.0.1:8077/demo/?debug",
     "build": "gulp",
     "watch": "gulp watch & npm start",
-    "start": "npm run url && http-server ./ -c-1 -p 8077"
+    "start": "npm run url && http-server ./ -c-1 -p 8077",
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
-    "url": "git+http://xxx.com/demo"
+    "url": "https://github.com/searchfe/gulp-parser-inline"
   },
-  "homepage": "http://xxx.com/demo",
+  "homepage": "https://github.com/searchfe/gulp-parser-inline",
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.4",
+    "@semantic-release/commit-analyzer": "^6.2.0",
+    "@semantic-release/git": "^7.0.16",
+    "@semantic-release/npm": "^5.1.13",
+    "@semantic-release/release-notes-generator": "^7.2.1",
     "@types/clean-css": "^4.2.1",
     "@types/ftp": "^0.3.29",
     "@types/gulp-util": "^3.0.34",
@@ -44,6 +50,7 @@
     "jest": "^24.7.1",
     "jsdoc-to-markdown": "^4.0.1",
     "nyc": "^13.0.1",
+    "semantic-release": "^15.13.19",
     "source-map-support": "^0.5.9",
     "ts-jest": "^24.0.2",
     "ts-node": "^7.0.1",
@@ -54,12 +61,24 @@
   },
   "dependencies": {
     "@types/less": "^3.0.0",
-    "clean-css": "^4.2.1",
     "debug": "^4.1.1",
+    "@types/replace-ext": "0.0.27",
+    "clean-css": "^4.2.1",
     "gulp-util": "^3.0.8",
     "less": "^3.9.0",
+    "replace-ext": "^1.0.0",
     "through2": "^3.0.1",
     "uglify-js": "^3.5.10"
+  },
+  "release": {
+    "branch": "master",
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ]
   },
   "engines": {
     "node": ">= 6.0.x"

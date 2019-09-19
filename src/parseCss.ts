@@ -36,7 +36,7 @@ function parseCss(file: any, options: parserOption) {
         content = parseLess(content);
     }
     content = parseCssContent(content, options, file);
-    content = modifyUrl(content);
+    content = modifyUrl(content, options.staticDomain);
     if ((options.unCompressFiles && options.compress && options.unCompressFiles.indexOf(file.path) === -1) || (options.compress && !options.unCompressFiles)) {
         content = new CleanCSS({ format: 'keep-breaks' }).minify(content).styles;
     }
