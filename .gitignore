@@ -23,4 +23,3 @@ mydev*
 /debug/
 /test
 # output/*
-package-lock.json
