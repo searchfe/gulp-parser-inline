@@ -31,13 +31,9 @@ function parseJs(file: any, options: parserOption) {
     }
 
     content = parseJSContent(content, options, file);
-    content = content.replace(/('|")?(\/\/)?m.baidu.com\/se(\/)?('|")/, '$1/se$4');
+    content = content.replace(/('|")?(\/\/)?m.baidu.com\/se(\/)?('|")/g, '$1/se$4');
     if ((options.unCompressFiles && options.compress && options.unCompressFiles.indexOf(file.path) === -1) || (options.compress && !options.unCompressFiles)) {
-        content = UglifyJS.minify(content, {
-            output: { max_line_len: 500 },
-            compress: false,
-            mangle: false
-        }).code || content;
+        content = UglifyJS.minify(content, options.ugilyJsConfig).code || content;
     }
     if ((options.unHashFiles && options.useHash && options.unHashFiles.indexOf(file.path) === -1) || (options.useHash && !options.unHashFiles)) {
         let md5Hash = getMd5(content, 7);

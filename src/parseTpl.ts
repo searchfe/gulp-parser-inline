@@ -116,7 +116,7 @@ function parseTplContent(content: string, options: parserOption, file: any) {
         }
         return inlinecontent;
     });
-    content = modifyUrl(content);
+    content = modifyUrl(content, options.staticDomain, options.sourceMapPath);
     return content;
 }
 

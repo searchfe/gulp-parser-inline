@@ -13,7 +13,7 @@ function getMd5(data: string, len: number = 7) {
 }
 function getFileDataFromResourceMap(key: string, sourceMapPath: string): any {
     key = key.indexOf('www-wise/') !== -1 ? key.split('www-wise/')[1] : key;
-    if(fs.existsSync(sourceMapPath)){
+    if (fs.existsSync(sourceMapPath)) {
         let fileContent = fs.readFileSync(sourceMapPath, 'utf-8');
         let fileObj = JSON.parse(fileContent ? fileContent : '{}');
         debug('getFileData', fileObj[key] ? fileObj[key] : 'null');
@@ -21,13 +21,13 @@ function getFileDataFromResourceMap(key: string, sourceMapPath: string): any {
     }
     return {};
 }
-function writeMap(key: string, value: string, sourceMapPath: string) {
+function writeMap(key: string, value: fileInfo, sourceMapPath: string) {
     let obj = {};
     if (fs.existsSync(sourceMapPath)) {
         obj = JSON.parse(fs.readFileSync(sourceMapPath).toString());
     }
-    if (value) {
-        obj[key] = { md5: value, output: key.replace('src/', 'output/').replace(/(\.[a-zA-Z0-9]+)$/, `_${value}$1`) };        
+    if (value.md5) {
+        obj[key] = value;
     } else {
         obj[key] = { md5: 'null', output: key.replace('src/', 'output/') };
     }
@@ -45,8 +45,22 @@ function getBase64(data: string | Buffer | any[]) {
     }
     return data.toString('base64');
 }
-function modifyUrl(content:string, prefix:string) {
-    return content.replace(/url\(('|")?(\/static)(.*)\.(png|jpg|gif|jpeg)('|")?\)/ig, `url($1${prefix}$2$3.$4$5)`);
+function modifyUrl(content: string, prefix: string, sourceMapPath?: string) {
+    if (sourceMapPath) {
+        content = content.replace(/(href=|src=)('|")(\/static\/\S+\.[a-zA-Z]+)('|")/g, (all, href, quote, value) => {
+            let fileMd5 = getFileDataFromResourceMap('src' + value, sourceMapPath).md5;
+            value = value.replace(/(\.[a-zA-Z]+)/g, `_${fileMd5}$1`);
+            return href + quote + prefix + value + quote;
+        });
+    }
+    content = content.replace(/url\(('|")?(\/static)(.*)\.(png|jpg|gif|jpeg)('|")?\)/ig, `url($1${prefix}$2$3.$4$5)`);
+    return content;
+}
+interface fileInfo {
+    md5:string;
+    output:string;
+    moduleId:string;
+    dependences:[string];
 }
 export {
     isInline,

@@ -49,6 +49,7 @@
     "istanbul": "^0.4.5",
     "jest": "^24.7.1",
     "jsdoc-to-markdown": "^4.0.1",
+    "json-beautify": "^1.1.1",
     "nyc": "^13.0.1",
     "semantic-release": "^15.13.19",
     "source-map-support": "^0.5.9",

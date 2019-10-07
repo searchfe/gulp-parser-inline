@@ -9,4 +9,6 @@ export declare interface parserOption {
     sourceMapPath: string,
     unHashFiles?: [string],
     unCompressFiles?: [string],
+    ugilyJsConfig?: any,
+    cleanCssConfig?: any
 }

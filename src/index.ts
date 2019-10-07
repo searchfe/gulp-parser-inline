@@ -52,7 +52,8 @@ function parseInline(options: parserOption) {
                     break;
             }
             this.push(file);
-            writeMap(path.relative(process.cwd(), oldFilePath), file.md5, options.sourceMapPath);
+            const key = path.relative(process.cwd(), oldFilePath);
+            writeMap(key, {md5: file.md5, output: key.replace('src/', 'output/').replace(/(\.[a-zA-Z0-9]+)$/, `_${file.md5}$1`), moduleId: file.moduleId, dependences: file.dependences}, options.sourceMapPath);
             cb();
         }
     })
