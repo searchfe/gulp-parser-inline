@@ -85,6 +85,10 @@ function parseCssContent(content: string, options: parserOption, file: any) {
             } else {
                 debug('parse content inline file', filePath);
                 inlinecontent += parseCss({ path: filePath }, options);
+                if (!file.inline) {
+                    file.inline = [];
+                }
+                file.inline.push(filePath);
             }
         }
         return inlinecontent;
@@ -104,6 +108,10 @@ function parseCssContent(content: string, options: parserOption, file: any) {
         } else {
             let prefix = 'data:image/' + path.extname(filePath).substring(1) + ';base64,';
             let base64String = getBase64(fs.readFileSync(filePath)) || '';
+            if (!file.inline) {
+                file.inline = [];
+            }
+            file.inline.push(filePath);
             return `url(${prefix}${base64String})`;
         }
     })

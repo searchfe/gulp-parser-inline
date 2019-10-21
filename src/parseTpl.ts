@@ -62,6 +62,10 @@ function parseTplContent(content: string, options: parserOption, file: any) {
                             + ',"path"=>"' + srcPath + '"'
                             + ',"version"=>"' + hash + '"] lsControl=$lsControl%}';
                         inlinecontent += captureStr + feLsInlineStr;
+                        if (!file.lsInline) {
+                            file.lsInline = [];
+                        }
+                        file.lsInline.push(lsPath);
                     }
                     break;
                 case '__inline':
@@ -70,7 +74,7 @@ function parseTplContent(content: string, options: parserOption, file: any) {
                     if (!fs.existsSync(filePath)) {
                         filePath = path.resolve(path.join(path.dirname(file.path), value));
                     }
-                    inlinecontent += parsefile(filePath, options, 'link');
+                    inlinecontent += parsefile(filePath, options, 'link', file);
                     break;
             }
         }
@@ -105,12 +109,16 @@ function parseTplContent(content: string, options: parserOption, file: any) {
                             + ',"path"=>"' + srcPath + '"'
                             + ',"version"=>"' + hash + '"] lsControl=$lsControl%}';
                         inlinecontent += captureStr + feLsInlineStr;
+                        if (!file.lsInline) {
+                            file.lsInline = [];
+                        }
+                        file.lsInline.push(lsPath);
                     }
                     break;
                 case '__inline':
                     debug('inline', file.path);
                     let jsPath = path.resolve(path.join(options.base, value));
-                    inlinecontent += parsefile(jsPath, options, 'script');
+                    inlinecontent += parsefile(jsPath, options, 'script', file);
                     break;
             }
         }
@@ -120,7 +128,7 @@ function parseTplContent(content: string, options: parserOption, file: any) {
     return content;
 }
 
-function parsefile(filePath: string, options: parserOption, type:string) {
+function parsefile(filePath: string, options: parserOption, type:string, file: any) {
     debug('parse file', filePath);
     let inlinecontent = '';
     if (fs.existsSync(filePath)) {
@@ -140,6 +148,10 @@ function parsefile(filePath: string, options: parserOption, type:string) {
                 //把文件内容放到script标签 中间
                 return type === 'script' ? '<script type="text/javascript">\n' + jsContent + '\n</script>' : jsContent;
         }
+        if (!file.inline) {
+            file.inline = [];
+        }
+        file.inline.push(filePath);
     } else {
         gutil.log(filePath);
     }

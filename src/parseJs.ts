@@ -73,6 +73,10 @@ function parseJSContent(content: string, options: parserOption, file: any) {
                     filePath = path.resolve(path.resolve(options.base, regPath));
                 }
                 debug('parse content inline file', filePath);
+                if (!file.inline) {
+                    file.inline = [];
+                }
+                file.inline.push(filePath);
                 //没有后缀名的默认补.js
                 if (path.extname(filePath) === '') {
                     filePath += '.js';

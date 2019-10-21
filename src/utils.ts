@@ -26,11 +26,11 @@ function writeMap(key: string, value: fileInfo, sourceMapPath: string) {
     if (fs.existsSync(sourceMapPath)) {
         obj = JSON.parse(fs.readFileSync(sourceMapPath).toString());
     }
-    if (value.md5) {
+    // if (value.md5) {
         obj[key] = value;
-    } else {
-        obj[key] = { md5: 'null', output: key.replace('src/', 'output/') };
-    }
+    // } else {
+        // obj[key] = { md5: 'null', output: key.replace('src/', 'output/'), inline:  };
+    // }
     debug('writeMap', obj[key].output);
     fs.writeFileSync(sourceMapPath, JSON.stringify(obj), 'utf-8');
 }
@@ -61,6 +61,10 @@ interface fileInfo {
     output:string;
     moduleId:string;
     dependences:[string];
+    inline:[string];
+    lsInline:[string];
+    depFiles:[string];
+    mtimeMs: number;
 }
 export {
     isInline,
