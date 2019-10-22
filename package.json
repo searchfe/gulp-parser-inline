@@ -12,6 +12,7 @@
     "url": "echo visit: http://127.0.0.1:8077/demo/?debug",
     "build": "gulp",
     "watch": "gulp watch & npm start",
+    "watch:dev": "cross-env NODE_ENV=development gulp watch",
     "start": "npm run url && http-server ./ -c-1 -p 8077",
     "semantic-release": "semantic-release"
   },
@@ -35,6 +36,7 @@
     "@types/uglify-js": "^3.0.4",
     "@types/underscore": "^1.8.9",
     "coveralls": "^3.0.2",
+    "cross-env": "^6.0.3",
     "crypto": "^1.0.1",
     "del": "^3.0.0",
     "etpl": "^3.2.0",
@@ -43,6 +45,7 @@
     "gulp-base64-inline": "^1.0.4",
     "gulp-inline-template": "^1.1.5",
     "gulp-replace": "^1.0.0",
+    "gulp-transform-cache": "^1.0.0",
     "gulp-typedoc": "^2.2.1",
     "gulp-typescript": "^5.0.0-alpha.3",
     "http-server": "^0.11.1",
