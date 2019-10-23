@@ -65,7 +65,7 @@ function parseInline(options: parserOption) {
                     }
                     const key = path.relative(process.cwd(), oldFilePath);
                     file.depFiles = Array.from(new Set([...file.inline, ...file.lsInline]));
-                    writeMap(key, {md5: file.md5, output: key.replace('src/', 'output/').replace(/(\.[a-zA-Z0-9]+)$/, `_${file.md5}$1`), moduleId: file.moduleId, dependences: file.dependences, inline: file.inline, lsInline: file.lsInline, depFiles: file.depFiles, mtimeMs: file && file.stat ? file.stat.mtimeMs : 0}, options.sourceMapPath);
+                    writeMap(key, {md5: file.md5, output: path.resolve(process.cwd(), file.path).replace(/src\//, 'output/'), moduleId: file.moduleId, dependences: file.dependences, inline: file.inline, lsInline: file.lsInline, depFiles: file.depFiles, mtimeMs: file && file.stat ? file.stat.mtimeMs : 0}, options.sourceMapPath);
                     cb(null, file);
                 // }
             }

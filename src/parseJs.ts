@@ -73,10 +73,6 @@ function parseJSContent(content: string, options: parserOption, file: any) {
                     filePath = path.resolve(path.resolve(options.base, regPath));
                 }
                 debug('parse content inline file', filePath);
-                if (!file.inline) {
-                    file.inline = [];
-                }
-                file.inline.push(filePath);
                 //没有后缀名的默认补.js
                 if (path.extname(filePath) === '') {
                     filePath += '.js';
@@ -84,7 +80,10 @@ function parseJSContent(content: string, options: parserOption, file: any) {
                 if (!fs.existsSync(filePath)) {
                     filePath = path.resolve(path.join(path.dirname(file.path), regPath));
                 }
-
+                if (!file.inline) {
+                    file.inline = [];
+                }
+                file.inline.push(filePath);
                 if (fs.existsSync(filePath)) {
                     // 判断inline的文件的后缀名，无后缀增加js后缀并inline
                     switch (path.extname(filePath)) {
