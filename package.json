@@ -3,7 +3,6 @@
   "version": "1.3.0",
   "discription": "gulp-parser-inline",
   "scripts": {
-    "lint": "tslint src/**/*.ts test/**/*.ts",
     "doc": "gulp doc",
     "conf": "tsc && node_modules/ts-node/dist/bin.js src/configuration/generate.ts",
     "test": "jest --no-cache",
@@ -14,7 +13,8 @@
     "watch": "gulp watch & npm start",
     "watch:dev": "cross-env NODE_ENV=development gulp watch",
     "start": "npm run url && http-server ./ -c-1 -p 8077",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "lint": "eslint 'src/**/*.ts'"
   },
   "repository": {
     "type": "git",
@@ -39,12 +39,22 @@
     "cross-env": "^6.0.3",
     "crypto": "^1.0.1",
     "del": "^3.0.0",
+    "eslint": "^6.5.1",
+    "@typescript-eslint/eslint-plugin": "^2.3.0",
+    "@typescript-eslint/parser": "^2.3.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.15.0",
+    "eslint-plugin-jest": "^22.6.4",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0",
     "etpl": "^3.2.0",
     "findup-sync": "^2.0.0",
     "gulp": "^4.0.0",
     "gulp-base64-inline": "^1.0.4",
     "gulp-inline-template": "^1.1.5",
     "gulp-replace": "^1.0.0",
+    "gulp-transform-cache": "*1.1.0",
     "gulp-typedoc": "^2.2.1",
     "gulp-typescript": "^5.0.0-alpha.3",
     "http-server": "^0.11.1",
@@ -57,11 +67,9 @@
     "source-map-support": "^0.5.9",
     "ts-jest": "^24.0.2",
     "ts-node": "^7.0.1",
-    "tslint": "^5.16.0",
     "typedoc": "^0.12.0",
     "typedoc-plugin-markdown": "^1.1.15",
-    "typescript": "^3.1.6",
-    "gulp-transform-cache": "*1.1.0"
+    "typescript": "^3.1.6"
   },
   "dependencies": {
     "@types/less": "^3.0.0",
