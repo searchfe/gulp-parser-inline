@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/searchfe/gulp-parser-inline/compare/v1.1.0...v1.1.1) (2019-10-23)
+
+
+### Bug Fixes
+
+* npm publish ([eea5174](https://github.com/searchfe/gulp-parser-inline/commit/eea5174064d67e8b7ac6d8e605fb0ff50a7061f1))
+
 # [1.1.0](https://github.com/searchfe/gulp-parser-inline/compare/v1.0.0...v1.1.0) (2019-10-22)
 
 
