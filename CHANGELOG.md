@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/searchfe/gulp-parser-inline/compare/v1.2.0...v1.3.0) (2019-10-23)
+
+
+### Features
+
+* change version ([d06bee6](https://github.com/searchfe/gulp-parser-inline/commit/d06bee6c6b1aa4101d82d9f18b880ca661adf06e))
+
 # [1.2.0](https://github.com/searchfe/gulp-parser-inline/compare/v1.1.1...v1.2.0) (2019-10-23)
 
 
