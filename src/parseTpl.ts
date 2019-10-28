@@ -52,12 +52,12 @@ function parseTplContent (content: string, options: parserOption, file: any) {
                     const type = path.extname(lsPath).replace('.', '').replace(/less/, 'css');
                     let content = '';
                     switch (path.extname(file.path)) {
-                        case '.css':
-                            content = parseCss({ path: lsPath }, options);
-                            break;
-                        case '.tpl':
-                            content = parseTpl({ path: lsPath }, options);
-                            break;
+                    case '.css':
+                        content = parseCss({ path: lsPath }, options);
+                        break;
+                    case '.tpl':
+                        content = parseTpl({ path: lsPath }, options);
+                        break;
                     }
                     const hash = getFileDataFromResourceMap(lsPath, options.sourceMapPath).md5;
                     const srcPath = (options.staticDomain ? options.staticDomain : '') + value.replace(/(\.[a-zA-Z]+)$/, '') + (hash ? ('_' + hash) : '') + '.' + type;
@@ -66,7 +66,7 @@ function parseTplContent (content: string, options: parserOption, file: any) {
                             ',"code"=>$smarty.capture.' + name +
                             ',"key"=>"' + key + '"' +
                             ',"path"=>"' + srcPath + '"' +
-                            ',"version"=>"' + (hash ? hash : '') + '"] lsControl=$lsControl%}';
+                            ',"version"=>"' + (hash || '') + '"] lsControl=$lsControl%}';
                     inlinecontent += captureStr + feLsInlineStr;
                     if (!file.lsInline) {
                         file.lsInline = [];
@@ -113,7 +113,7 @@ function parseTplContent (content: string, options: parserOption, file: any) {
                             ',"code"=>$smarty.capture.' + name +
                             ',"key"=>"' + key + '"' +
                             ',"path"=>"' + srcPath + '"' +
-                            ',"version"=>"' + (hash ? hash : '') + '"] lsControl=$lsControl%}';
+                            ',"version"=>"' + (hash || '') + '"] lsControl=$lsControl%}';
                     inlinecontent += captureStr + feLsInlineStr;
                     if (!file.lsInline) {
                         file.lsInline = [];
