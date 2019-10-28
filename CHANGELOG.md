@@ -1,3 +1,16 @@
+# [1.4.0](https://github.com/searchfe/gulp-parser-inline/compare/v1.3.0...v1.4.0) (2019-10-28)
+
+
+### Bug Fixes
+
+* path undefined ([1ca6455](https://github.com/searchfe/gulp-parser-inline/commit/1ca6455f7be525d31057db11d45595562f1beb2b))
+* path undefined ([496eaad](https://github.com/searchfe/gulp-parser-inline/commit/496eaada09f17935261cebca9a7c2557776248cd))
+
+
+### Features
+
+* add eslint ([f5052b5](https://github.com/searchfe/gulp-parser-inline/commit/f5052b5742a2d0f19053e8700e818ca090c20b66))
+
 # [1.3.0](https://github.com/searchfe/gulp-parser-inline/compare/v1.2.0...v1.3.0) (2019-10-23)
 
 
