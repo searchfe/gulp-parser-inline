@@ -1,6 +1,7 @@
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import Debug from 'debug';
+import * as path from 'path';
 const debug = Debug('inline:utils');
 function isInline (url: string) {
     return /[?&]__inline(?:[=&'"]|$)/.test(url);
@@ -12,11 +13,11 @@ function getMd5 (data: string, len: number = 7) {
     return md5sum.digest('hex').substring(0, len);
 }
 function getFileDataFromResourceMap (key: string, sourceMapPath: string): any {
-    key = key.indexOf('www-wise/') !== -1 ? key.split('www-wise/')[1] : key;
+    key = path.relative(process.cwd(), key);
     if (fs.existsSync(sourceMapPath)) {
         const fileContent = fs.readFileSync(sourceMapPath, 'utf-8');
         const fileObj = JSON.parse(fileContent || '{}');
-        debug('getFileData', fileObj[key] ? fileObj[key] : 'null');
+        debug('getFile: ' + key + '; Data: ', fileObj[key] ? fileObj[key] : 'null');
         return fileObj[key] ? fileObj[key] : {};
     }
     return {};
@@ -31,7 +32,7 @@ function writeMap (key: string, value: fileInfo, sourceMapPath: string) {
     // } else {
     // obj[key] = { md5: 'null', output: key.replace('src/', 'output/'), inline:  };
     // }
-    debug('writeMap', obj[key].output);
+    debug('writeFile: ' + key + '; data: ', obj[key].output);
     fs.writeFileSync(sourceMapPath, JSON.stringify(obj), 'utf-8');
 }
 function getBase64 (data: string | Buffer | any[]) {
@@ -48,8 +49,12 @@ function getBase64 (data: string | Buffer | any[]) {
 function modifyUrl (content: string, prefix: string, sourceMapPath?: string) {
     if (sourceMapPath) {
         content = content.replace(/(href=|src=)('|")(\/static\/\S+\.[a-zA-Z]+)('|")/g, (all, href, quote, value) => {
-            const fileMd5 = getFileDataFromResourceMap('src' + value, sourceMapPath).md5;
-            value = value.replace(/(\.[a-zA-Z]+)/g, `_${fileMd5}$1`);
+            const fileMd5 = getFileDataFromResourceMap(path.resolve(process.cwd(), 'src' + value), sourceMapPath).md5;
+            if (fileMd5) {
+                value = value.replace(/(\.[a-zA-Z]+)/g, `_${fileMd5}$1`);
+            } else {
+                value = value.replace(/(\.[a-zA-Z]+)/g, `_$1`);
+            }
             return href + quote + prefix + value + quote;
         });
     }

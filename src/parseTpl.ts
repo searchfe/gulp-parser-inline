@@ -50,15 +50,23 @@ function parseTplContent (content: string, options: parserOption, file: any) {
                     const name = tmpPath[tmpPath.length - 1].replace('.', '');
                     const key = name.replace('.', '');
                     const type = path.extname(lsPath).replace('.', '').replace(/less/, 'css');
-                    const content = parseCss({ path: lsPath }, options);
+                    let content = '';
+                    switch (path.extname(file.path)) {
+                        case '.css':
+                            content = parseCss({ path: lsPath }, options);
+                            break;
+                        case '.tpl':
+                            content = parseTpl({ path: lsPath }, options);
+                            break;
+                    }
                     const hash = getFileDataFromResourceMap(lsPath, options.sourceMapPath).md5;
-                    const srcPath = (options.staticDomain ? options.staticDomain : '') + '/se/' + value.replace(/(\.[a-zA-Z]+)$/, '') + '_' + hash + '.css';
+                    const srcPath = (options.staticDomain ? options.staticDomain : '') + value.replace(/(\.[a-zA-Z]+)$/, '') + (hash ? ('_' + hash) : '') + '.' + type;
                     const captureStr = '{%capture name ="' + name + '"%}' + content + '{%/capture%}';
                     const feLsInlineStr = '{%fe_ls_inline codeConf=["type"=>"' + type + '"' +
                             ',"code"=>$smarty.capture.' + name +
                             ',"key"=>"' + key + '"' +
                             ',"path"=>"' + srcPath + '"' +
-                            ',"version"=>"' + hash + '"] lsControl=$lsControl%}';
+                            ',"version"=>"' + (hash ? hash : '') + '"] lsControl=$lsControl%}';
                     inlinecontent += captureStr + feLsInlineStr;
                     if (!file.lsInline) {
                         file.lsInline = [];
@@ -99,13 +107,13 @@ function parseTplContent (content: string, options: parserOption, file: any) {
                     const type = 'js';
                     const content = parseJs({ path: lsPath }, options);
                     const hash = getFileDataFromResourceMap(lsPath, options.sourceMapPath).md5;
-                    const srcPath = (options.staticDomain ? options.staticDomain : '') + '/se/' + value.replace(/(\.[a-zA-Z]+)$/, '') + '_' + hash + '.js';
+                    const srcPath = (options.staticDomain ? options.staticDomain : '') + value.replace(/(\.[a-zA-Z]+)$/, '') + (hash ? ('_' + hash) : '') + '.' + type;
                     const captureStr = '{%capture name ="' + name + '"%}' + content + '{%/capture%}';
                     const feLsInlineStr = '{%fe_ls_inline codeConf=["type"=>"' + type + '"' +
                             ',"code"=>$smarty.capture.' + name +
                             ',"key"=>"' + key + '"' +
                             ',"path"=>"' + srcPath + '"' +
-                            ',"version"=>"' + hash + '"] lsControl=$lsControl%}';
+                            ',"version"=>"' + (hash ? hash : '') + '"] lsControl=$lsControl%}';
                     inlinecontent += captureStr + feLsInlineStr;
                     if (!file.lsInline) {
                         file.lsInline = [];
