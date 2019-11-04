@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/searchfe/gulp-parser-inline/compare/v1.5.0...v1.6.0) (2019-11-04)
+
+
+### Features
+
+* add time record ([3331321](https://github.com/searchfe/gulp-parser-inline/commit/33313213674b0919b6b3b9708497cc3456b3ea9d))
+
 # [1.5.0](https://github.com/searchfe/gulp-parser-inline/compare/v1.4.0...v1.5.0) (2019-11-04)
 
 
