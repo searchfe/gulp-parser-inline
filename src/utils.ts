@@ -2,6 +2,12 @@ import * as crypto from 'crypto';
 import * as fs from 'fs';
 import Debug from 'debug';
 import * as path from 'path';
+import * as parseJson from 'fast-json-parse';
+import * as fastJson from 'fast-json-stringify';
+const stringify = fastJson({
+    title: 'Example Schema',
+    type: 'object'
+});
 const debug = Debug('inline:utils');
 function isInline (url: string) {
     return /[?&]__inline(?:[=&'"]|$)/.test(url);
@@ -13,19 +19,23 @@ function getMd5 (data: string, len: number = 7) {
     return md5sum.digest('hex').substring(0, len);
 }
 function getFileDataFromResourceMap (key: string, sourceMapPath: string): any {
+    console.time('read source');
     key = path.relative(process.cwd(), key);
     if (fs.existsSync(sourceMapPath)) {
         const fileContent = fs.readFileSync(sourceMapPath, 'utf-8');
-        const fileObj = JSON.parse(fileContent || '{}');
+        const fileObj = parseJson(fileContent || '{}');
         debug('getFile: ' + key + '; Data: ', fileObj[key] ? fileObj[key] : 'null');
+        console.timeEnd('read source');
         return fileObj[key] ? fileObj[key] : {};
     }
+    console.timeEnd('read source');
     return {};
 }
 function writeMap (key: string, value: fileInfo, sourceMapPath: string) {
+    console.time('writeMap');
     let obj = {};
     if (fs.existsSync(sourceMapPath)) {
-        obj = JSON.parse(fs.readFileSync(sourceMapPath).toString());
+        obj = parseJson(fs.readFileSync(sourceMapPath).toString());
     }
     // if (value.md5) {
     obj[key] = value;
@@ -33,7 +43,8 @@ function writeMap (key: string, value: fileInfo, sourceMapPath: string) {
     // obj[key] = { md5: 'null', output: key.replace('src/', 'output/'), inline:  };
     // }
     debug('writeFile: ' + key + '; data: ', obj[key].output);
-    fs.writeFileSync(sourceMapPath, JSON.stringify(obj), 'utf-8');
+    fs.writeFileSync(sourceMapPath, stringify(obj), 'utf-8');
+    console.timeEnd('writeMap');
 }
 function getBase64 (data: string | Buffer | any[]) {
     if (data instanceof Buffer) {
@@ -62,13 +73,13 @@ function modifyUrl (content: string, prefix: string, sourceMapPath?: string) {
     return content;
 }
 interface fileInfo {
-    md5:string;
-    output:string;
-    moduleId:string;
-    dependences:[string];
-    inline:[string];
-    lsInline:[string];
-    depFiles:[string];
+    md5: string;
+    output: string;
+    moduleId: string;
+    dependences: [string];
+    inline: [string];
+    lsInline: [string];
+    depFiles: [string];
     mtimeMs: number;
 }
 export {

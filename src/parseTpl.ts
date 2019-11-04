@@ -8,6 +8,7 @@ import { parserOption } from '../global';
 import Debug from 'debug';
 const debug = Debug('inline:parseTpl');
 function parseTpl (file: any, options: parserOption) {
+    console.time('parseTpl');
     debug('input file', file.path);
     let content = '';
     if (file.contents) {
@@ -27,6 +28,8 @@ function parseTpl (file: any, options: parserOption) {
     content = parseTplContent(content, options, file);
 
     file.contents = Buffer.from(content);
+    console.log('parseTpl filePath', file.path);
+    console.timeEnd('parseTpl');
     return content;
 }
 

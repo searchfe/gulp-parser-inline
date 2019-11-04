@@ -69,6 +69,7 @@ function parseLess (content) {
 }
 
 function parseCssContent (content: string, options: parserOption, file: any) {
+    console.time('parseCssContent');
     debug('parse content', file.path);
     /* eslint-disable */
     const reg = /@import\s*url\(\s*['"]?\/?([^\)]+?)(\?__inline)?['"]?\s*\)\s*[;]*/ig;
@@ -116,7 +117,8 @@ function parseCssContent (content: string, options: parserOption, file: any) {
             return `url(${prefix}${base64String})`;
         }
     });
-
+    console.log('filePath', file.path);
+    console.timeEnd('parseCssContent');
     return content;
 }
 
