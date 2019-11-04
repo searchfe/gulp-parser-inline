@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/searchfe/gulp-parser-inline/compare/v1.4.0...v1.5.0) (2019-11-04)
+
+
+### Features
+
+* add san-inline ([5ac4d72](https://github.com/searchfe/gulp-parser-inline/commit/5ac4d72d8b440a90abb6f8a7d483e4071e87af8d))
+
 # [1.4.0](https://github.com/searchfe/gulp-parser-inline/compare/v1.3.0...v1.4.0) (2019-10-28)
 
 

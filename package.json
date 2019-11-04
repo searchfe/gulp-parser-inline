@@ -1,6 +1,6 @@
 {
   "name": "gulp-parser-inline",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "discription": "gulp-parser-inline",
   "scripts": {
     "doc": "gulp doc",
