@@ -30,6 +30,7 @@ npm install --save-dev gulp-parser-inline
 
 const staticDomain = process.env.dev ? '' : '//m.baidu.com';
 const parse = require('gulp-parser-inline').parseInline;
+const sanInline = require('gulp-parser-inline').parseSan;
 // parse tpl
 gulp.task('build:tpl', function (stream) {
     return gulp.src(['src/**/*.tpl'])
@@ -64,7 +65,12 @@ gulp.task('build:css', function (stream) {
         }))
         .pipe(gulp.dest('dist'));
 });
-
+// parseSan
+gulp.task('san', ()=>{
+  return gulp.src(['./test/*.san.ts'])
+  .pipe(sanInline({basePath: path.resolve('./test')}))
+  .pipe(gulp.dest('./output'));
+});
 ```
 
 ## 运行

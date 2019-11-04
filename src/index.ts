@@ -9,6 +9,7 @@ import { parseJs } from './parseJs';
 import { parseTpl } from './parseTpl';
 import { parseCss } from './parseCss';
 import { parserOption } from '../global';
+import { parseSan } from './san-inline';
 import { writeMap } from './utils';
 import Debug from 'debug';
 import { Transform } from 'gulp-transform-cache';
@@ -71,4 +72,4 @@ function parseInline (options: parserOption) {
     });
 }
 
-export { parseInline, parserOption };
+export { parseInline, parserOption, parseSan };

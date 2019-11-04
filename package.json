@@ -72,11 +72,14 @@
     "typescript": "^3.1.6"
   },
   "dependencies": {
+    "@types/escape-html": "^0.0.20",
     "@types/less": "^3.0.0",
     "@types/replace-ext": "0.0.27",
     "clean-css": "^4.2.1",
     "debug": "^4.1.1",
+    "escape-html": "^1.0.3",
     "gulp-util": "^3.0.8",
+    "html-minifier": "^4.0.0",
     "less": "^3.9.0",
     "replace-ext": "^1.0.0",
     "through2": "^3.0.1",
@@ -105,7 +108,8 @@
   "files": [
     "dist",
     "*.json",
-    "*.md"
+    "*.md",
+    "!text.d.ts"
   ],
   "nyc": {
     "extension": [
