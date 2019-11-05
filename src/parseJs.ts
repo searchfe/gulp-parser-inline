@@ -56,7 +56,6 @@ function parseJs (file: any, options: parserOption) {
 }
 
 function parseJSContent (content: string, options: parserOption, file: any) {
-    console.time('parseJSContent');
     debug('parse content', file.path);
     /* eslint-disable */
     const reg = /(__inline)\s*\(\s*([^\)]+)\s*\)\s*[;]*/ig;
@@ -111,7 +110,6 @@ function parseJSContent (content: string, options: parserOption, file: any) {
         });
     }
     console.log('parseJSContent filepath: ', file.path);
-    console.timeEnd('parseJSContent');
     return content;
 }
 

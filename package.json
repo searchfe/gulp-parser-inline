@@ -78,8 +78,6 @@
     "clean-css": "^4.2.1",
     "debug": "^4.1.1",
     "escape-html": "^1.0.3",
-    "fast-json-parse": "^1.0.3",
-    "fast-json-stringify": "^1.15.6",
     "gulp-util": "^3.0.8",
     "html-minifier": "^4.0.0",
     "less": "^3.9.0",
