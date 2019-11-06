@@ -116,7 +116,6 @@ function parseCssContent (content: string, options: parserOption, file: any) {
             return `url(${prefix}${base64String})`;
         }
     });
-    console.log('filePath', file.path);
     return content;
 }
 

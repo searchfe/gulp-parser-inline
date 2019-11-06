@@ -109,7 +109,6 @@ function parseJSContent (content: string, options: parserOption, file: any) {
             return inlinecontent;
         });
     }
-    console.log('parseJSContent filepath: ', file.path);
     return content;
 }
 

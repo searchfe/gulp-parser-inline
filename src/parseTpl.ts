@@ -27,7 +27,6 @@ function parseTpl (file: any, options: parserOption) {
     content = parseTplContent(content, options, file);
 
     file.contents = Buffer.from(content);
-    console.log('parseTpl filePath', file.path);
     return content;
 }
 
