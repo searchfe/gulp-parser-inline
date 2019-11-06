@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/searchfe/gulp-parser-inline/compare/v1.6.0...v1.6.1) (2019-11-06)
+
+
+### Bug Fixes
+
+* remove fast-json ([447ca53](https://github.com/searchfe/gulp-parser-inline/commit/447ca535ef31d281a274724bc475e9e8a1220a2f))
+
 # [1.6.0](https://github.com/searchfe/gulp-parser-inline/compare/v1.5.0...v1.6.0) (2019-11-04)
 
 
