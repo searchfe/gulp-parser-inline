@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/searchfe/gulp-parser-inline/compare/v1.6.1...v1.6.2) (2019-11-06)
+
+
+### Bug Fixes
+
+* remove log ([f08fc7a](https://github.com/searchfe/gulp-parser-inline/commit/f08fc7a40a4641bffa3a861a767d15a5e9da91b6))
+
 ## [1.6.1](https://github.com/searchfe/gulp-parser-inline/compare/v1.6.0...v1.6.1) (2019-11-06)
 
 
