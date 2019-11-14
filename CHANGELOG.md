@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/searchfe/gulp-parser-inline/compare/v1.6.2...v1.6.3) (2019-11-14)
+
+
+### Bug Fixes
+
+* update regext for modifyUrl function ([2ed2b53](https://github.com/searchfe/gulp-parser-inline/commit/2ed2b53d7889168d42bb7c16e18368838cb13888))
+
 ## [1.6.2](https://github.com/searchfe/gulp-parser-inline/compare/v1.6.1...v1.6.2) (2019-11-06)
 
 
