@@ -49,14 +49,14 @@ function getBase64 (data: string | Buffer | any[]) {
 }
 function modifyUrl (content: string, prefix: string, sourceMapPath?: string) {
     if (sourceMapPath) {
-        content = content.replace(/(href=|src=)('|")(\/static\/\S+\.[a-zA-Z]+)('|")/g, (all, href, quote, value) => {
+        content = content.replace(/(href|src)\s*=\s*('|")(\/static\/\S+\.[a-zA-Z]+)('|")/g, (all, href, quote, value) => {
             const fileMd5 = getFileDataFromResourceMap(path.resolve(process.cwd(), 'src' + value), sourceMapPath).md5;
             if (fileMd5) {
                 value = value.replace(/(\.[a-zA-Z]+)/g, `_${fileMd5}$1`);
             } else {
                 value = value.replace(/(\.[a-zA-Z]+)/g, `_$1`);
             }
-            return href + quote + prefix + value + quote;
+            return href + '=' + quote + prefix + value + quote;
         });
     }
     content = content.replace(/url\(('|")?(\/static)(.*)\.(png|jpg|gif|jpeg)('|")?\)/ig, `url($1${prefix}$2$3.$4$5)`);
